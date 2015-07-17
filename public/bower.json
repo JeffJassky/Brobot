@@ -1,0 +1,19 @@
+{
+  "name": "brobot",
+  "version": "1.0.0",
+  "authors": [
+    "Jeff Jassky <jeff.jassky@showtime.net>"
+  ],
+  "description": "Brobot Robotic Drummer Dashboard",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.4"
+  }
+}
