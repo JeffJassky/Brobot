@@ -1,83 +1,86 @@
-var five = require("johnny-five");
-var $ = require("jquery");
-var board = new five.Board();
-var calibrating = false;
+var
+	five = require("johnny-five"),
+	$ = require("jquery"),
+	_ = require("underscore"),
+	board = new five.Board(),
+	pins = {
 
-var channels = {
-	36: {
-		name: "snare",
-		pinNumber: 3,
-		minimumPwm: 30,
-		piezoPin: 0,
 	},
-	39: {
-		name: "kick",
-		pinNumber: 5,
-		minimumPwm: 30,
-		piezoPin: 1
-	},
-	42: {
-		name: "hat",
-		pinNumber: 9,
-		minimumPwm: 30,
-		piezoPin: 2
-	}
-};
+	instruments = [
+		{
+			name: "snare",
+			note: 36,
+			pinNumber: 3,
+			minimumPwm: 30,
+			piezoPin: 0,
+			delay: 100
+		},
+		{
+			name: "kick",
+			note: 39,
+			pinNumber: 5,
+			minimumPwm: 30,
+			piezoPin: 1,
+			delay: 100
+		},
+		{
+			name: "hat",
+			note: 40,
+			pinNumber: 9,
+			minimumPwm: 30,
+			piezoPin: 2,
+			delay: 100
+		}
+	];
+
+// Returns instrument object
+function getInstrumentWithNote(note){
+	return _.find(instruments,{note: note});
+}
+
+// Returns a Pin Object
+function getPinWithNote(note){
+	var index = _.findIndex(instruments, {note: note});
+	return index >= 0 ? pins[index] : false;
+}
 
 board.on("ready", function() {
-	for(var channel in channels){
-		channels[channel].pin = five.Led(channels[channel].pinNumber);
-	}
-	if(calibrating){
-		for(var channel in channels){
-			this.analogRead(channels[channel].piezoPin, function(reading) {
-				if(reading > 100){
-
-				}
-			});
-		}
+	for(var i in instruments){
+		pins[i] = five.Led(instruments[i].pinNumber);
 	}
 });
 
-exports.calibrate = function(){
-	calibrating = true;
-	for(var channel in channels){
-		channels[channel].deferred = $.Deferred();
-		
-		for(var velocity = 10; velocity <= 128; velocity+= 5){
-			this.strike(channel, velocity);
-		}
-	}
-};
-
-exports.queueStrike = function(channel, velocity){
-	if(channels[channel]){
-		if(channels[channel].delay){
+exports.queue = function(note, velocity){
+	console.log('queueStrike', note, velocity);
+	var instrument = getInstrumentWithNote(note);
+	if(instrument){
+		if(instrument.delay){
 			setTimeout(
-				function(){
-					strike(channel, velocity);
-				},
-				channels[channel].delay
+				this.strike.bind(null, note, velocity),
+				instrument.delay
 			);
 		}else{
-			this.strike(channel, velocity);
+			this.strike(note, velocity);
 		}
 	}
 };
 
-exports.strike = function(channel, velocity){
-	console.log('hit', channel, velocity);
-	if(channels[channel] && channels[channel].pin){
-		channels[channel].pin.brightness(velocity * 2);
+exports.strike = function(note, velocity){
+	console.log('strike', note, velocity);
+	var pin = getPinWithNote(note);
+	if(pin){
+		pin.brightness(velocity * 2);
 		setTimeout(function(){
-			channels[channel].pin.brightness(0);
+			pin.brightness(0);
 		}, 2000);
+	}else{
+		console.log('strike', 'No pin for note ' + note);
 	}
 };
 
 exports.settings = function(data){
 	if(data){
-		channels = data;
+		instruments = data;
 	}
-	return channels;
+	return instruments
 };

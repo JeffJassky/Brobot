@@ -11,7 +11,7 @@ midi.on('message', function(deltaTime, message) {
     	velocity = message[2],
     	instruction = message[0];
 	if (instruction === 144){
-		brobot.queueStrike(channel, velocity);
+		brobot.queue(channel, velocity);
 	}
 });
 midi.openVirtualPort("Brobot");
@@ -23,18 +23,14 @@ var app = express();
 app.use(express.static('public'));
 app.use(bodyParser.json());
 
-app.get('/api/calibrate', function (req, res) {
-	brobot.calibrate();
-	res.send('success');
-});
-
 app.get('/api/command/hit', function (req, res) {
 	brobot.strike(36, 1);
 	res.send('success');
 });
 
 app.get('/api/settings', function (req, res) {
-	res.json(brobot.settings());
+	var settings = brobot.settings();
+	res.json(settings);
 });
 
 app.post('/api/settings', function (req, res) {
