@@ -13,7 +13,8 @@ var
 			pinNumber: 3,
 			minimumPwm: 30,
 			piezoPin: 0,
-			delay: 100
+			delay: 100,
+			keyCode: 49
 		},
 		{
 			name: "kick",
@@ -21,7 +22,8 @@ var
 			pinNumber: 5,
 			minimumPwm: 30,
 			piezoPin: 1,
-			delay: 100
+			delay: 100,
+			keyCode: 50
 		},
 		{
 			name: "hat",
@@ -29,7 +31,8 @@ var
 			pinNumber: 9,
 			minimumPwm: 30,
 			piezoPin: 2,
-			delay: 100
+			delay: 100,
+			keyCode: 51
 		}
 	];
 
