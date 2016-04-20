@@ -20,8 +20,8 @@ midi.openVirtualPort("Brobot");
 
 
 // Make socket resources
+// instruments
 var instruments = data.resource('instruments');
-
 instruments.use(function(req, res, next){
 	console.log('instrument request');
 	var crud = {
@@ -31,10 +31,24 @@ instruments.use(function(req, res, next){
 	};
 	crud[req.action]();
 });
-
 instruments.on('sync', function (sync) {
 	console.log('sync');	
 	sync.notify(sync.client);
+});
+// system status
+var systemStatus = {
+	arduinoConnected: true,
+	midiConnected: true
+};
+var systemStatusResource = data.resource('systemStatus');
+systemStatusResource.use(function(req, res, next){
+	console.log('systemStatus request');
+	var crud = {
+		list: function(){
+			res.send(systemStatus);
+		}
+	};
+	crud[req.action]();
 });
 
 

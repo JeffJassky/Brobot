@@ -6,19 +6,20 @@ var App = new Backbone.Marionette.Application({
     socket: null,
     onBeforeStart: function(){
     	this.socket = data(io.connect());
-    	this.systemStatus = new App.Entities.SystemStatus.SystemStatusModel();
+
+        // Instruments Collection
     	this.instrumentCollection = new App.Entities.Instrument.InstrumentCollection();
-	    dataio.sync(this.instrumentCollection, this.socket.resource('instruments'));
+        var instrumentCollectionResource = this.socket.resource('instruments');
+        dataio.sync(this.instrumentCollection, instrumentCollectionResource);
   		this.instrumentCollection.fetch();
 
-		// this.instruments = this.socket.resource('instruments');
-		// this.instruments.subscribe('create', 'update', function (instruments) {
-		// 	console.log(instruments);
-		// });
-    },
-    // syncModel: function(){
+        // System Status
+        this.systemStatus = new App.Entities.SystemStatus.SystemStatusModel();
+        var systemStatusResource = this.socket.resource('systemStatus');
+        dataio.syncModel(this.systemStatus, systemStatusResource);
+        this.systemStatus.fetch();
 
-    // }
+    },
     regions: {
         container: 'main#app-container'
     }
