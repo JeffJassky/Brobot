@@ -32,13 +32,14 @@ instruments.use(function(req, res, next){
 	crud[req.action]();
 });
 instruments.on('sync', function (sync) {
-	console.log('sync');	
+	console.log('instruments sync');	
 	sync.notify(sync.client);
 });
+
 // system status
 var systemStatus = {
-	arduinoConnected: true,
-	midiConnected: true
+	arduinoConnected: false,
+	midiConnected: false
 };
 var systemStatusResource = data.resource('systemStatus');
 systemStatusResource.use(function(req, res, next){
@@ -50,7 +51,9 @@ systemStatusResource.use(function(req, res, next){
 	};
 	crud[req.action]();
 });
-
+systemStatusResource.on('sync', function (sync) {
+	console.log('systemStatus sync');
+});
 
 // socketio stuff
 io.on('connection', function(socket){

@@ -30,6 +30,20 @@ dataio.sync = function (collection, resource) {
   var proto = Object.getPrototypeOf(collection);
   proto.model = proto.model.extend({ sync: sync });
   collection.sync = sync;
+
+  resource.subscribe('create', function (data) {
+    collection.add(data);
+  });
+
+  resource.subscribe('update', function (data) {
+    var item = collection.get(data.id);
+    if (item) item.set(data);
+  });
+
+  resource.subscribe('delete', function (data) {
+    collection.remove(data.id);
+  });
+
 };
 
 dataio.syncModel = function (model, resource) {

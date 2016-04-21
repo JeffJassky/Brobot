@@ -9,8 +9,7 @@ var App = new Backbone.Marionette.Application({
 
         // Instruments Collection
     	this.instrumentCollection = new App.Entities.Instrument.InstrumentCollection();
-        var instrumentCollectionResource = this.socket.resource('instruments');
-        dataio.sync(this.instrumentCollection, instrumentCollectionResource);
+        dataio.sync(this.instrumentCollection, this.socket.resource('instruments'));
   		this.instrumentCollection.fetch();
 
         // System Status
