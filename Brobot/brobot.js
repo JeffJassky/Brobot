@@ -1,5 +1,4 @@
 var config = require('./config'),
-	$ = require("jquery"),
 	_ = require("underscore"),
 	midiLibrary = require('midi'),
 	five = require("johnny-five"),
@@ -11,8 +10,14 @@ module.exports = {
 	// =====================
 	// INIT
 	// =====================
-	initialize: function(socketData){
+	initialize: function(){
+		// Calculate maximum latency
+		var maximumLatency = _.max(config.instruments, function(instrument){
+			return instrument.softLatencyAbsolute;
+		});
+		// instantiate instrument controllers
 		_.each(config.instruments, function(instrument){
+			instrument.softLatencyRelative = instrument.softLatencyAbsolute - maximumLatency;
 			instruments[instrument.note] = new instrumentController(instrument);
 		});
 		this.initializeArduino();
@@ -20,6 +25,7 @@ module.exports = {
 	},
 	initializeArduino: function(){
 		board.on("ready", function() {
+			console.log('Arduino connected');
 			_.each(config.instruments, function(instrument){
 				instruments[instrument.note].pin = five.Led(instruments[i].pinNumber);
 			});
@@ -27,23 +33,24 @@ module.exports = {
 	},
 	initializeMidi: function(){
 		midi = new midiLibrary.input();
-		midi.openVirtualPort("Brobot");
+		midi.openVirtualPort("Brobie Node");
 		midi.on('message', this.onMidiMessage.bind(this));
 	},
 
 	// =====================
 	// Event Manager
 	// =====================
-	onMidiMessage: function(){
+	onMidiMessage: function(time, message){
 		var instruction = message[0],
 	    	channel = message[1],
 	    	velocity = message[2];
-		if (instruction === 144){
+
+		if ([144,155].indexOf(instruction) !== -1){
 			this.onMidiNote(channel, velocity)
 		}
 	},
 	onMidiNote: function (channel, velocity){
-		if(instruments.hasOwnProperty(channel)){
+		if(instruments[channel]){
 			instruments[channel].queue(velocity);
 		}
 	}

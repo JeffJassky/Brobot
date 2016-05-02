@@ -4,25 +4,22 @@ var config = {
 			name: "snare",
 			note: 36,
 			pinNumber: 3,
-			minimumPwm: 30,
-			piezoPin: 0,
-			delay: 100
+			softVelocity: 30,
+			softLatencyAbsolute: 100
 		},
 		{
 			name: "kick",
 			note: 39,
 			pinNumber: 5,
-			minimumPwm: 30,
-			piezoPin: 1,
-			delay: 100
+			softVelocity: 30,
+			softLatencyAbsolute: 40
 		},
 		{
 			name: "hat",
 			note: 40,
 			pinNumber: 9,
-			minimumPwm: 30,
-			piezoPin: 2,
-			delay: 100
+			softVelocity: 30,
+			softLatencyAbsolute: 30
 		}
 	]
 }
