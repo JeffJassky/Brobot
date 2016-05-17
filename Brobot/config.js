@@ -3,23 +3,23 @@ var config = {
 		{
 			name: "snare",
 			note: 36,
-			pinNumber: 3,
-			softVelocity: 30,
-			softLatencyAbsolute: 100
+			pinNumber: 5,
+			softVelocity: 20,
+			softLatencyAbsolute: 50
 		},
 		{
 			name: "kick",
-			note: 39,
-			pinNumber: 5,
-			softVelocity: 30,
-			softLatencyAbsolute: 40
+			note: 43,
+			pinNumber: 6,
+			softVelocity: 20,
+			softLatencyAbsolute: 50
 		},
 		{
-			name: "hat",
-			note: 40,
-			pinNumber: 9,
-			softVelocity: 30,
-			softLatencyAbsolute: 30
+			name: "Hat",
+			note: 29,
+			pinNumber: 8,
+			softVelocity: 20,
+			softLatencyAbsolute: 50
 		}
 	]
 }
