@@ -8,12 +8,25 @@ var InstrumentController = function(instrument, config) {
 // properties and methods
 InstrumentController.prototype = {
 
-	// delayForVelocity(velocity:Int) return Int
-	// calculates delay in MS from strike to impact for given :velocity
-	delayForVelocity: function(velocity){
-		// TODO : Make exponential, not linear
-		var velocityFactor = 1 / 128 * velocity;
-		return Math.ceil(this.softLatencyAbsolute * velocityFactor);
+	// DEVELOPMENT METHODS
+	determineMinimumDurationForContact: function(){
+		var self = this;
+		var min = 5; // minimum duration in milliseconds
+		var max = 30; // maximum duration in milliseconds
+		
+		for(var x=min; x<max; x++){
+			setTimeout(function(duration){
+	                        console.log('starting duration test for '+self.pinNumber+' for '+duration+'ms');
+                        	self.pin.brightness(255);
+                        	setTimeout(
+                        	        function(){
+                        	                console.log('Pin ' + self.pinNumber + ' going to 0');
+                        	                self.pin.brightness(0);
+                        	        },
+					duration
+                        	)
+			}.bind(null, x), 1000 * (x - min));
+		}
 	},
 
 	// durationForVelocity(velocity:Int) return Int
@@ -22,25 +35,9 @@ InstrumentController.prototype = {
 	durationForVelocity: function(velocity){
 		in_min = 127;
 		in_max = 0;
-		out_min = 30;
-		out_max = 30 + this.softLatencyAbsolute;
+		out_max = this.latency;
+		out_min = this.latency + 20;
 		return Math.ceil((velocity - in_min) * (out_max - out_min) / (in_max - in_min) + out_min);
-	},
-
-	// trueVelocity(velocity:Int) return Int
-	// Returns proper velocity considering actual velocity range
-	trueVelocity: function(velocity){
-		in_min = 0;
-		in_max = 127;
-		out_min = this.softVelocity;
-		out_max = 127;
-		return Math.ceil((velocity - in_min) * (out_max - out_min) / (in_max - in_min) + out_min);
-	},
-
-	// pinValueForVelocity(velocity:Int) return Int
-	// Returns a PWM pin value for given :velocity
-	pinValueForVelocity: function(velocity){
-		return this.trueVelocity(velocity) * 2;
 	},
 
 	// queue(velocity:Int) return null
@@ -51,7 +48,7 @@ InstrumentController.prototype = {
 			function(){
 				self.strike(velocity)
 			},
-			this.delayForVelocity(velocity)
+			this.relativeOffset
 		);
 	},
 
@@ -61,16 +58,14 @@ InstrumentController.prototype = {
 		var self = this;
 		if(this.hasOwnProperty('pin')){
 			console.log({
+				name: this.name,
 				pin: this.pinNumber,
 				velocity: velocity,
-				trueVelocity: this.trueVelocity(velocity),
-				pwm: this.pinValueForVelocity(velocity),
-				delay: this.delayForVelocity(velocity),
+				pwm: 255,
+				relativeOffset: this.relativeOffset,
 				duration: this.durationForVelocity(velocity)
 			});
-			this.pin.brightness(
-				this.pinValueForVelocity(velocity)
-			);
+			this.pin.brightness(255);
 			setTimeout(
 				function(){
 					console.log('Pin ' + self.pinNumber + ' going to 0');

@@ -13,13 +13,13 @@ module.exports = {
 	initialize: function(){
 		// Calculate maximum latency
 		var slowestInstrument = _.max(config.instruments, function(instrument){
-			return instrument.softLatencyAbsolute;
+			return instrument.latency;
 		});
-		var maximumLatency = slowestInstrument.softLatencyAbsolute;
+		var maximumLatency = slowestInstrument.latency;
 
 		// instantiate instrument controllers
 		_.each(config.instruments, function(instrument){
-			instrument.softLatencyRelative = maximumLatency - instrument.softLatencyAbsolute;
+			instrument.relativeOffset = maximumLatency - instrument.latency;
 			instruments[instrument.note] = new instrumentController(instrument);
 		});
 		this.initializeArduino();
@@ -65,11 +65,29 @@ module.exports = {
 		if ([144,155,153].indexOf(instruction) !== -1){
 			this.onMidiNote(channel, velocity)
 		}
+		if([128,129].indexOf(instruction) !== -1){
+			this.onInstruction({
+				instruction: instruction,
+				channel: channel,
+				velocity: velocity
+			});
+		}
+	},
+	onInstruction: function(e){
+		if(e.instruction === 128){
+			if(instruments[e.channel]){
+				instruments[e.channel].determineMinimumDurationForContact();
+			}
+		}
 	},
 	onMidiNote: function (channel, velocity){
 		console.log("Midi note incoming", channel, velocity);
-		if(instruments[channel]){
-			instruments[channel].queue(velocity);
+		if(new Date().getHours() >= 10 || true){
+			if(instruments[channel]){
+				instruments[channel].queue(velocity);
+			}
+		}else{
+			console.log("Not within operating hours");
 		}
 	}
 };
