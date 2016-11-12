@@ -1,0 +1,37 @@
+body{
+	font-family: "myriad pro";
+	background :#333;
+	color: #ccc;
+}
+
+.channel-strip-container{
+
+}
+.channel-strip{
+	width: 150px;
+	float: left;
+}
+
+.channel-strip-cell{
+	background: #444;
+	margin:2px;
+	padding:5px 10px;
+}
+
+.channel-strip label{
+	font-size: .8em;
+	text-transform: uppercase;
+	color: #bbb;
+}
+
+.channel-strip-name input[type=text]{
+	font-size: 1em;
+}
+input[type=text]{
+	background: transparent;
+	color: #ccc;
+	border:0px;
+	font-size: 2em;
+	width:100%;
+	text-align: center;
+}

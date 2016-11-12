@@ -11,6 +11,7 @@ module.exports = {
 	// INIT
 	// =====================
 	initialize: function(){
+
 		// Calculate maximum latency
 		var slowestInstrument = _.max(config.instruments, function(instrument){
 			return instrument.latency;
@@ -24,7 +25,6 @@ module.exports = {
 		});
 		this.initializeArduino();
 		this.initializeMidi();
-		// this.warmUp();
 	},
 	initializeArduino: function(){
 		board.on("ready", function() {
@@ -38,19 +38,6 @@ module.exports = {
 		midi = new midiLibrary.input();
 		midi.openVirtualPort("Brobie Node");
 		midi.on('message', this.onMidiMessage.bind(this));
-	},
-	warmUp: function(){
-		console.log('Warming Up');
-		var timeout = 0;
-		for(var velocity = 0; velocity <= 127; velocity++){
-			_.each(instruments, function(instrument){
-				setTimeout(function(){
-					instrument.queue(velocity);
-				}, timeout)
-				timeout += 150;
-			});
-		}
-		console.log('Warmup Complete');
 	},
 
 	// =====================

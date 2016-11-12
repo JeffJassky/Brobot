@@ -1,0 +1,23 @@
+{
+  "name": "Brobot",
+  "homepage": "https://github.com/JeffJassky/Brobot",
+  "authors": [
+    "Jeff Jassky <jeff@jeffjassky.com>"
+  ],
+  "description": "Web gui for Brobot",
+  "main": "/js/bootstrap.js",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "handlebars": "~4.0.5",
+    "marionette": "~2.4.4",
+    "jquery": "^3.1.1",
+    "socket.io-client": "^1.5.1"
+  }
+}

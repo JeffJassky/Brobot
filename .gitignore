@@ -1,4 +1,4 @@
 node_modules
-public/bower_components
+public/js/vendor
 .AppleDouble
 .DS_Store
