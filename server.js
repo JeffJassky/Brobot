@@ -1,4 +1,3 @@
-
 // LOCAL DEPENDENCIES
 var express = require('express'),
 	app 	= express(),
@@ -6,17 +5,18 @@ var express = require('express'),
 	drumset = require('./Brobot/drumset-controller');
 
 // GLOBAL DEPENDENCIES
-process.settings  = require('./Brobot/settings-controller');
+process.settings = require('./Brobot/settings-controller');
 process.systemstatus = require('./Brobot/systemstatus-controller');
 process.serialport = require('./Brobot/serialport-controller');
+process.midi	= require('./Brobot/midi-controller');
 
 require('./Brobot/socket-controller').initialize(server, function(socket){
 	process.socket = socket;
 	process.serialport.beginScanning();
+	process.midi.initialize();
 	drumset.initialize();
 });
 
-process.midi	= require('./Brobot/midi-controller');
 
 // SERVER
 app.use(express.static('public'));

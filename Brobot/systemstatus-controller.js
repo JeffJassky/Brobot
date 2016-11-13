@@ -1,8 +1,7 @@
 var status = {
 	'arduino.status': 'disconnected',
 	'arduino.port': null,
-	'midi.status': 'closed',
-	'midi.name': null,
+	'midi.name': null
 };
 
 module.exports = {
