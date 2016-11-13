@@ -1,30 +1,25 @@
+
+// LOCAL DEPENDENCIES
 var express = require('express'),
 	app 	= express(),
 	server 	= require('http').Server(app),
-	io 		= require('socket.io')(server),
-	config = require('./Brobot/config-controller');
+	drumset = require('./Brobot/drumset-controller');
 
-var brobot	= require('./Brobot/brobot').initialize();
+// GLOBAL DEPENDENCIES
+process.settings  = require('./Brobot/settings-controller');
+process.systemstatus = require('./Brobot/systemstatus-controller');
+process.serialport = require('./Brobot/serialport-controller');
 
-app.use(express.static('public'));
-
-server.listen(80, function(){
-	console.log('Server running');
+require('./Brobot/socket-controller').initialize(server, function(socket){
+	process.socket = socket;
+	process.serialport.beginScanning();
+	drumset.initialize();
 });
 
-io.on('connection', function (socket) {
-	// GET INSTRUMENTS
-	socket.on('get:instruments', function(){
-		// emit the new data
-		socket.emit('instruments', config.get('instruments'));
-	});
+process.midi	= require('./Brobot/midi-controller');
 
-	// POST INSTRUMENTS
-	socket.on('post:instruments', function (data) {
-		// save the data
-		config.save('instruments', data, function(){
-			// emit the new data
-			// socket.emit('instruments', config.get('instruments'));
-		});
-	});
+// SERVER
+app.use(express.static('public'));
+server.listen(80, function(){
+	console.log('Server running');
 });

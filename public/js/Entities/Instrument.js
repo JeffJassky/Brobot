@@ -1,5 +1,8 @@
 App.module('Entities.Instrument', function(Instrument, App){
-    'use strict';
+	
+	Instrument.InstrumentModel = Backbone.Model.extend({
+
+	});
 
     Instrument.InstrumentCollection = Backbone.Collection.extend({
 		model: Instrument.InstrumentModel,
@@ -10,9 +13,6 @@ App.module('Entities.Instrument', function(Instrument, App){
 				collection.set(collection.parse(data));
 			});
 			this.fetch();
-			this.listenTo(this, 'change', this.save);
-		},
-		beginListening: function(){
 			this.listenTo(this, 'change', this.save);
 		},
 		fetch: function(){

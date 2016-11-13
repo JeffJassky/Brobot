@@ -5,33 +5,62 @@ body{
 }
 
 .channel-strip-container{
-
+	text-align: center;
+	margin-top: 200px;
 }
 .channel-strip{
 	width: 150px;
-	float: left;
+	display: inline-block;
 }
 
+.channel-strip-cell:first-child{
+	border-top-left-radius: 8px;
+	border-top-right-radius: 8px;
+}
+.channel-strip-cell:last-child{
+	border-bottom-left-radius: 8px;
+	border-bottom-right-radius: 8px;
+}
 .channel-strip-cell{
 	background: #444;
 	margin:2px;
-	padding:5px 10px;
+	padding:10px 10px;
 }
 
 .channel-strip label{
 	font-size: .8em;
 	text-transform: uppercase;
-	color: #bbb;
+	color: #666;
 }
 
 .channel-strip-name input[type=text]{
 	font-size: 1em;
 }
-input[type=text]{
+
+.channel-strip-pad{
+	background: #555;
+    box-shadow: inset 0px 0px 50px #444;
+    height: 90px;
+}
+.channel-strip-pad.event{
+	background: #fff02c;
+    box-shadow: inset 0 0 50px #e7a23b, 0 0 50px #e7a23b;
+}
+.channel-strip-pad.mousedown{
+	background: #a3fc26;
+    box-shadow: inset 0 0 50px #2baa39, 0 0 50px #2baa39;
+}
+
+
+input[type=text], input[type=number]{
 	background: transparent;
 	color: #ccc;
 	border:0px;
 	font-size: 2em;
 	width:100%;
 	text-align: center;
+}
+
+input[type=number]{
+	padding-left:15px;
 }
