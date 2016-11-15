@@ -36,7 +36,7 @@ module.exports = {
 		maximumLatency = _.max(process.settings.get('instruments'), function(instrument){
 			return parseInt(instrument.latency);
 		}).latency;
-		console.log('DRUMSET: Maximum Latency ' + maximumLatency);
+		process.konsole.log('DRUMSET: Maximum Latency ' + maximumLatency);
 	},
 	instrumentForNote: function(note){
 		return instruments[noteToInstrumentMap[note]];
@@ -46,11 +46,11 @@ module.exports = {
 	// Event Manager
 	// =====================
 	onButtonPress: function(e){
-		console.log('DRUMSET: onButtonPress', e.note, e.velocity);
+		process.konsole.log('DRUMSET: onButtonPress', e.note, e.velocity);
 		var drumset = this;
 		setTimeout(
 			function(){
-				console.log(drumset);
+				process.konsole.log(drumset);
 				drumset.instrumentForNote(e.note).strike(e.velocity);
 			},
 			this.relativeOffset

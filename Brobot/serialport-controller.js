@@ -13,17 +13,17 @@ function beginScanning(){
 	stopScanning();
 	listDevices();
 	refreshInterval = setInterval(listDevices, refreshIntervalTime);
-	console.log('SERIALPORT: Scanning for devices');
+	process.konsole.log('SERIALPORT: Scanning for devices');
 }
 
 function stopScanning(){
 	clearInterval(refreshInterval);
-	console.log('SERIALPORT: Stopped scanning for devices');
+	process.konsole.log('SERIALPORT: Stopped scanning for devices');
 }
 
 function listDevices(){
 	SerialPort.list(function (err, ports) {
-		console.log('SERIALPORT: '+ports.length+' devices detected');
+		process.konsole.log('SERIALPORT: '+ports.length+' devices detected');
 		var deviceFound = _.find(ports, function(port){
 			if(port.manufacturer){
 				return port.manufacturer.toLowerCase().indexOf('arduino') !== -1
@@ -47,19 +47,19 @@ function connectToPort(deviceComName){
 
 	port.on('open', function() {
 		process.systemstatus.set('arduino.status', 'connected');
-		console.log('SERIALPORT: Connected to ' + deviceComName);
+		process.konsole.log('SERIALPORT: Connected to ' + deviceComName);
 	});
 	port.on('error', function(err) {
-		console.log('SERIALPORT: error - ' + err);
+		process.konsole.log('SERIALPORT: error - ' + err);
 	});
 	port.on('close', function(err) {
 		process.systemstatus.set('arduino.status', 'disconnected');
-		console.log('SERIALPORT: Closed');
+		process.konsole.log('SERIALPORT: Closed');
 		beginScanning();
 	});
 	port.on('disconnect', function(err) {
 		process.systemstatus.set('arduino.status', 'disconnected');
-		console.log('SERIALPORT: Disconnected');
+		process.konsole.log('SERIALPORT: Disconnected');
 		beginScanning();
 	});
 }
@@ -67,7 +67,7 @@ function connectToPort(deviceComName){
 function send(note, velocity){
 	if(port && port.isOpen()){
 		var data = 's '+note+' '+velocity+"\n";
-		console.log('SERIALPORT: Writing ' + data);
+		process.konsole.log('SERIALPORT: Writing ' + data);
 		port.write(data);
 	}
 }

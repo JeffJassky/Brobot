@@ -10,8 +10,8 @@ function saveFile(callback){
 		
 	// write file contents
 	fs.writeFile(__dirname + '/settings.js', contents, function (err) {
-		if (err) return console.log(err);
-		console.log('SETTINGS: File saved');
+		if (err) return process.konsole.log(err);
+		process.konsole.log('SETTINGS: File saved');
 	});
 }
 

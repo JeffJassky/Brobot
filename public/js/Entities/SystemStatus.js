@@ -10,6 +10,13 @@ App.module('Entities.SystemStatus', function(SystemStatus, App){
 			});
 			this.fetch();
 		},
+		parse: function(data){
+			var newObj = {};
+			_.each(data, function(value, key){
+				newObj[key.replace('.','-')] = value;
+			});
+			return newObj;
+		},
 		fetch: function(){
 			App.socket.emit('get:'+this.socketResourceId);
 		},

@@ -21,11 +21,11 @@ InstrumentController.prototype = {
 		
 		for(var x=min; x<max; x++){
 			setTimeout(function(duration){
-                console.log('starting duration test for '+self.pinNumber+' for '+duration+'ms');
+                process.konsole.log('starting duration test for '+self.pinNumber+' for '+duration+'ms');
             	self.pin.brightness(255);
             	setTimeout(
         	        function(){
-    	                console.log('Pin ' + self.pinNumber + ' going to 0');
+    	                process.konsole.log('Pin ' + self.pinNumber + ' going to 0');
     	                self.pin.brightness(0);
         	        },
 					duration
@@ -49,7 +49,7 @@ InstrumentController.prototype = {
 	// Manipulate pin to trigger solenoid
 	strike: function(velocity){
 		var self = this;
-		console.log({
+		process.konsole.log({
 			name: this.get('name'),
 			pin: this.get('pinNumber'),
 			velocity: velocity,

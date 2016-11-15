@@ -1,4 +1,6 @@
 var socketio = require('socket.io');
+var io = null;
+var socket = null;
 
 var API = {
 	getSystemStatus: function(){
@@ -17,16 +19,30 @@ var API = {
 }
 module.exports = {
 	initialize: function(server, callback){
-		var io = socketio(server);
-		io.on('connection', function (socket) {
-			process.socket = socket;
-			console.log('SOCKET: Connected');
+		process.konsole.log('SOCKET: Initializing');
+		io = socketio(server);
+		io.on('connection', function (sock) {
+			process.konsole.log('SOCKET: Connected');
+			socket = sock;
 			API.getSystemStatus();
 			API.getInstruments();
 			socket.on('get:systemstatus', API.getSystemStatus);
 			socket.on('get:instruments', API.getInstruments);
 			socket.on('post:instruments', API.postInstruments);
-			callback(socket);
 		});
+	},
+	on: function(eventName, method){
+		if(socket){
+			socket.on(eventName, method);
+		}else{
+			io.on('connection', function(socket){
+				socket.on(eventName, method);
+			});
+		}
+	},
+	emit: function(eventName, payload){
+		if(socket){
+			socket.emit(eventName, payload);
+		}
 	}
 };

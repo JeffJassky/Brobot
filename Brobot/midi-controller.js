@@ -18,14 +18,14 @@ var midi;
 function initialize(){
 	midi = new midiLibrary.input();
 	midi.openVirtualPort(midiPortName);
-	console.log("MIDI: Opened virtual port ("+midiPortName+")");
+	process.konsole.log("MIDI: Opened virtual port ("+midiPortName+")");
 	process.systemstatus.set('midi.name', midiPortName);
 	midi.on('message', onMidiMessage);
 	return midi;
 }
 
 function onMidiMessage(time, message){
-	console.log('MIDI: Message Received', message);
+	process.konsole.log('MIDI: Message Received', message);
 	var instruction = message[0],
     	note = message[1],
     	velocity = message[2];
