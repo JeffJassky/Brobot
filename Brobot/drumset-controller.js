@@ -20,7 +20,7 @@ module.exports = {
 		this.getMaximumLatency();
 
 		// LISTEN FOR EVENTS
-
+                process.on('drumset:queuenote', this.queueNote.bind(this));
 		process.socket.on('buttonpress', this.onButtonPress.bind(this));
 	},
 	onSettingsChange: function(){
@@ -45,6 +45,18 @@ module.exports = {
 	// =====================
 	// Event Manager
 	// =====================
+
+        queueNote: function(e){
+                process.konsole.log('DRUMSET: queueNote', e.note, e.velocity);
+                var drumset = this;
+                setTimeout(
+                        function(){
+                                process.konsole.log(drumset);
+                                drumset.instrumentForNote(e.note).strike(e.velocity);
+                        },
+                        this.relativeOffset
+                );
+        },
 	onButtonPress: function(e){
 		process.konsole.log('DRUMSET: onButtonPress', e.note, e.velocity);
 		var drumset = this;

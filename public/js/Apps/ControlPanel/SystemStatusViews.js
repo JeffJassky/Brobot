@@ -2,6 +2,9 @@ App.module('ControlPanel.Views', function(Views, App){
     'use strict';
 
     Views.SystemStatusView = Backbone.Marionette.ItemView.extend({
+	modelEvents: {
+		change: 'render'
+	},
         className: 'system-status',
 		template: function(data){
 			return Handlebars.compile(

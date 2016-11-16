@@ -2,7 +2,8 @@ var App = new Backbone.Marionette.Application({
 	socket: null,
     regions: {
         channelStrips: '#js-channel-strips-region',
-        systemStatus: '#js-system-status-region'
+        systemStatus: '#js-system-status-region',
+	console: '#js-console-region'
     },
     onBeforeStart: function(){
     	this.socket = io.connect(window.document.location.origin);

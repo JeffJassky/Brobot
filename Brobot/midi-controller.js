@@ -21,7 +21,7 @@ function initialize(){
 	process.konsole.log("MIDI: Opened virtual port ("+midiPortName+")");
 	process.systemstatus.set('midi.name', midiPortName);
 	midi.on('message', onMidiMessage);
-	return midi;
+	return this;
 }
 
 function onMidiMessage(time, message){
@@ -31,7 +31,11 @@ function onMidiMessage(time, message){
     	velocity = message[2];
 
     if(midiInstructions[instruction]){
-    	process.emit(midiInstructions[instruction], {
+	process.konsole.log('MIDI: Instruction being called', 'drumset:' + midiInstructions[instruction], {
+                note: note,
+                velocity: velocity
+        });
+    	process.emit('drumset:' + midiInstructions[instruction], {
     		note: note,
     		velocity: velocity
     	});
