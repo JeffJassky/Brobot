@@ -12,7 +12,7 @@ Git: https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
 ```cd Brobot```
 
 ### Install the node modules
-```node install```
+```npm install```
 
 ### Install the Bower modules
 ```bower install```
